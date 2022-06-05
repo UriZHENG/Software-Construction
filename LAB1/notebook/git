@@ -1,0 +1,49 @@
+刚刚接触软件构造这门课程以及github的相关运用时，对于git的理解花了我整整约两节课的时间才搞懂
+
+下面我将给出最简洁明了的用git将我的代码提交到GitHub上的流程
+
+下载安装git：如果你是刚接触git，那么按照指导一步一步下载安装即可，在这里就不赘述了。
+Git的配置：Windows下安装成git后打开Git Bash。在命令行中输入如下命令，配置用户信息：
+  git config --global user.name "Your Name"
+
+  git config --global user.email "email@example.com"
+
+  3.创建仓库：git init
+
+   但是在这之前你需要进入你想要创建仓库的文件夹地址，需要用cd命令，但其实不用那么麻烦，直接在文件夹中右键，点击git bash即可
+
+  4.git add命令可以将文件添加到仓库；git commit命令把文件提交到仓库
+
+推荐使用git add .（注意这有个点），这个命令会将所有文件都添加到仓库，
+
+然后git commit -m “你想写的注释“。
+
+  5.添加到远程库：git remote add origin 地址
+
+  6.创建分支：如果是新创建的仓库，需要创建分支，最好是master
+
+  git branch -M master
+
+  7. 推送：把本地库的内容推送到远程，用git push命令，实际上就是把当前分支master推送到远  程：
+
+  git push -u origin master
+
+在第一次推送master分支时，加上-u参数，git不但会把本地的master分支内容推送到远程的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令
+
+之后，只要本地做了提交，就可以通过命令：
+
+git push origin master
+
+总体写一遍：
+
+  git init
+
+  git add.
+
+  git commit -m “比如写：第一次提交”
+
+  git remote add origin 地址
+
+  git branch -M master
+
+  git push -u origin master
