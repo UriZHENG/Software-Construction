@@ -1,0 +1,94 @@
+关于重写equals方法和hashCode方法
+在Lab3中，自己设计了Employee，Process，Course三个类分别来表示职工、进程、课程。并且在其他类中用到了对这三个类的对象进行判相等的操作，这就需要重写equals方法以及hashCode方法。
+
+equals()和hashCode()这两个方法属于Object类，而Object类是所有类的父类，因此所有的类都继承了这两个方法。Object类的equals()方法代码如下:
+
+public boolean equals(Object obj) {  
+    return (this == obj);  
+    }  
+此处直接使用==判相等，可见对于任何非空引用值 x 和 y，只有当x 和 y 引用同一个对象时，此方法才返回 true。而实际应用中我们期望的相等往往并不是比较对象的引用是否指向同一块内存地址，因此常常需要重写equals()方法。重写equals方法需要满足以下几个要求：
+
+1、自反性：对于任何非空引用x，x.equals(x)应该返回true。
+2、对称性：对于任何引用x和y，如果x.equals(y)返回true，那么y.equals(x)也应该返回true。
+3、传递性：对于任何引用x、y和z，如果x.equals(y)返回true，y.equals(z)返回true，那么x.equals(z)也应该返回true。
+4、一致性：如果x和y引用的对象没有发生变化，那么反复调用x.equals(y)应该返回同样的结果。
+5、非空性：对于任意非空引用x，x.equals(null)应该返回false。
+
+比如在Lab3中Employee中重写的equals()方法如下(其中instanceof 是一个运算符， 用于判断一个对象是不是属于一个类 )：
+
+@Override
+	public int hashCode()
+	{
+		int result = 3;
+		int multiple = 31;
+		result = result * multiple + ((name == null) ? 0 : name.hashCode());
+		result = result * multiple + ((position == null) ? 0 : position.hashCode());
+		result = result * multiple + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
+		return result;
+	}
+在Process中重写的equals()方法如下：
+
+@Override
+	public boolean equals(Object o)
+	{
+		if(o==this)
+			return true;
+		if(!(o instanceof Process))
+			return false;
+		Process process=(Process) o;
+		return ID.equals(process.getID()) && name.equals(process.getName()) 
+				&& (shortTime==process.getShortTime()) && (longTime==process.getLongTime());
+	}
+在Course中重写的equals()方法如下：
+
+@Override
+	public boolean equals(Object o)
+	{
+		if(o==this)
+			return true;
+		if(!(o instanceof Course))
+			return false;
+		Course course=(Course)o;
+		return CID.equals(course.getCID()) && courseName.equals(course.getCourseName())
+				&& teacherName.equals(course.getTeacherName()) && place.equals(course.getPlace());
+	}
+一般equals方法被重写时，也需要重写 hashCode 方法，除非对该类的对象不进行任何hash相关的操作。Object.hashCode中约定，相等的对象必须拥有相同的哈希值，且只要对象的equals方法的比较操作所用到的信息没有被修改，那么对这同一个对象调用多次hashCode方法，都必须返回同一个整数。如果两个对象根据equals方法比较是不相等的，那么调用其中某个对象的hashCode方法可以返回相同的结果，也可以返回不同的结果。
+
+Employee中重写的hashCode()方法如下：
+
+@Override
+	public int hashCode()
+	{
+		int result = 3;
+		int multiple = 31;
+		result = result * multiple + ((name == null) ? 0 : name.hashCode());
+		result = result * multiple + ((position == null) ? 0 : position.hashCode());
+		result = result * multiple + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
+		return result;
+	}
+Process中重写的hashCode()方法如下：
+
+@Override
+	public int hashCode()
+	{
+		int result = 3;
+		int multiple = 31;
+		result = result * multiple + ((ID == null) ? 0 : ID.hashCode());
+		result = result * multiple + ((name == null) ? 0 : name.hashCode());
+		result = result * multiple + (int)shortTime;
+		result = result * multiple + (int)longTime;
+		return result;
+	}
+Course中重写的hashCode()方法如下：
+
+@Override
+	public int hashCode()
+	{
+		int result = 3;
+		int multiple = 31;
+		result = result * multiple + ((CID == null) ? 0 : CID.hashCode());
+		result = result * multiple + ((courseName == null) ? 0 : courseName.hashCode());
+		result = result * multiple + ((teacherName == null) ? 0 : teacherName.hashCode());
+		result = result * multiple + ((place == null) ? 0 : place.hashCode());
+		return result;
+  }
